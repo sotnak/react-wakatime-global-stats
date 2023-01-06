@@ -1,17 +1,21 @@
 {
   "name": "@sotnak/react-component",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "buildLib": "rollup -c"
+    "buildLib": "rollup -c",
+    "publishLib": "npm publish --access=public"
   },
   "keywords": [],
   "author": "sotnak",
   "license": "ISC",
+  "dependencies": {
+    "react": "^18.2.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@rollup/plugin-babel": "^6.0.3",

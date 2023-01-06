@@ -1,2 +1,3 @@
 import {Button} from "./stories/Button";
-export {Button}
+import {Header} from "./stories/Header";
+export {Button, Header}
