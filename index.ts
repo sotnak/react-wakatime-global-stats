@@ -1,3 +1,3 @@
-import {Button} from "./stories/Button";
-import {Header} from "./stories/Header";
+import {Button} from "./components/Button";
+import {Header} from "./components/Header";
 export {Button, Header}
