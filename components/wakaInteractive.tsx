@@ -1,28 +1,68 @@
 import React, {useState} from "react";
-import {ToggleButton, ToggleButtonGroup} from "react-bootstrap";
-import {AggregateFunction, Waka} from "./waka";
+import {Pagination, Stack, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
+import {AggregateFunction, Category, Waka} from "./waka";
+
+import "./wakaInteractive.css"
 
 export const WakaInteractive = ()=>{
-    const [aggFun, setAggFun] = useState(AggregateFunction.sum)
+    const [aggFun, setAggFun] = useState(AggregateFunction.sum);
+    const [category, setCategory] = useState(Category.languages);
+    const [year, setYear] = useState(2022)
 
     const handleAggChange = (agg: AggregateFunction)=>{
-        setAggFun(agg)
+        setAggFun(agg);
+    }
+
+    const handleCategoryChange = (cat: Category)=>{
+        setCategory(cat);
+    }
+
+    const handleYearChange = (yr: number)=>{
+        setYear(yr);
+    }
+
+    let items = [];
+    for (let number = 2013; number <= 2022; number++) {
+        items.push(
+            <Pagination.Item key={number} active={number === year} onClick={()=>{handleYearChange(number)} }>
+                {number}
+            </Pagination.Item>,
+        );
     }
 
     return (
-        <>
-            <ToggleButtonGroup type="radio" name="options" defaultValue={AggregateFunction.sum} onChange={handleAggChange}>
-                <ToggleButton id="tbg-radio-1" value={AggregateFunction.sum}>
-                    Sum
-                </ToggleButton>
-                <ToggleButton id="tbg-radio-2" value={AggregateFunction.average}>
-                    Average
-                </ToggleButton>
-                <ToggleButton id="tbg-radio-3" value={AggregateFunction.median}>
-                    Median
-                </ToggleButton>
-            </ToggleButtonGroup>
-            <Waka aggregateFunction={aggFun} limit={20}/>
-        </>
+        <Stack id="full">
+            <Stack direction="horizontal" gap={3}>
+                <ToggleButtonGroup type="radio" name="agg options" defaultValue={AggregateFunction.sum} onChange={handleAggChange}>
+                    <ToggleButton id="tbg-agg-1" value={AggregateFunction.sum}>
+                        Sum
+                    </ToggleButton>
+                    <ToggleButton id="tbg-agg-2" value={AggregateFunction.average}>
+                        Average
+                    </ToggleButton>
+                    <ToggleButton id="tbg-agg-3" value={AggregateFunction.median}>
+                        Median
+                    </ToggleButton>
+                </ToggleButtonGroup>
+
+                <ToggleButtonGroup className="ms-auto" type="radio" name="category options" defaultValue={Category.languages} onChange={handleCategoryChange}>
+                    <ToggleButton id="tbg-category-1" variant="info" value={Category.languages}>
+                        Languages
+                    </ToggleButton>
+                    <ToggleButton id="tbg-category-2" variant="info" value={Category.editors}>
+                        Editors
+                    </ToggleButton>
+                    <ToggleButton id="tbg-category-3" variant="info" value={Category.operating_systems}>
+                        Operating Systems
+                    </ToggleButton>
+                </ToggleButtonGroup>
+            </Stack>
+
+            <div id="wakaContainer">
+                <Waka aggregateFunction={aggFun} limit={20} category={category} year={year}/>
+            </div>
+
+            <Pagination className="col-md-5 mx-auto">{items}</Pagination>
+        </Stack>
     )
 }

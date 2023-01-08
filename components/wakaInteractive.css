@@ -1,0 +1,10 @@
+#wakaContainer {
+    overflow-y: scroll;
+}
+
+#full {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}

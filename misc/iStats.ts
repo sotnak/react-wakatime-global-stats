@@ -1,8 +1,10 @@
 export interface IStats {
-    languages: ILanguages[]
+    languages: ICategory[]
+    editors: ICategory[]
+    operating_systems: ICategory[]
 }
 
-export interface ILanguages {
+export interface ICategory {
     average: IValue
     max: IValue
     median: IValue
