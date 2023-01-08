@@ -2,7 +2,7 @@ export interface IStats {
     languages: ILanguages[]
 }
 
-interface ILanguages {
+export interface ILanguages {
     average: IValue
     max: IValue
     median: IValue
@@ -10,7 +10,7 @@ interface ILanguages {
     name: string
 }
 
-interface IValue{
+export interface IValue{
     seconds: number
     text: string
 }

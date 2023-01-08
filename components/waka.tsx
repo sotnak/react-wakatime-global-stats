@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
-import {IStats} from "../misc/iStats";
+import {IStats, IValue} from "../misc/iStats";
 import Spinner from "react-bootstrap/Spinner";
 import {ListGroup, ProgressBar, Stack} from "react-bootstrap";
 
+interface IStatsView{
+    name: string
+    value: IValue
+}
 const fun = async (): Promise<IStats> =>{
     // @ts-ignore
     const {default: stats} = await import("../assets/waka2022.json");
@@ -15,7 +19,7 @@ export enum AggregateFunction {
     median
 }
 
-interface WakaProps {
+export interface WakaProps {
     aggregateFunction: AggregateFunction
     limit: number|undefined
 }
@@ -37,41 +41,41 @@ export const Waka = ({
     let limit: number
     props.limit ? limit = props.limit : limit = 1000000;
 
-    let aggName: string = "";
 
-    if(aggregateFunction == AggregateFunction.average)
-        aggName = "average"
+    const filteredStats = (stats as IStats).languages.filter(elem => elem.name != 'Other');
+    let values: IStatsView[] = [];
 
-    if(aggregateFunction == AggregateFunction.median)
-        aggName = "median"
+    if(aggregateFunction == AggregateFunction.average) {
+        values = filteredStats.map(elem => ({ name:elem.name, value: elem.average }) );
+    }
 
-    if(aggregateFunction == AggregateFunction.sum)
-        aggName = "sum"
+    if(aggregateFunction == AggregateFunction.median) {
+        values = filteredStats.map(elem => ({ name:elem.name, value: elem.median }) );
+    }
 
-    // @ts-ignore
-    const sortedStats = (stats as IStats).languages
-        .filter(lang => lang.name != "Other")
-        .sort((a,b) => b[aggName].seconds - a[aggName].seconds )
+    if(aggregateFunction == AggregateFunction.sum) {
+        values = filteredStats.map(elem => ({ name:elem.name, value: elem.sum }) );
+    }
+
+    const sortedValues = values
+        .sort((a,b) => b.value.seconds - a.value.seconds )
         .slice(0,limit)
 
     let maxValue: number;
-    // @ts-ignore
-    sortedStats[0] ? maxValue = sortedStats[0][aggName].seconds : 0
+    values ? maxValue = values[0].value.seconds : 0
 
-    // @ts-ignore
-    const items = sortedStats
+    const items = sortedValues
         .map(lang =>
             <ListGroup.Item key={lang.name}>
                 <Stack direction="horizontal" gap={3}>
                     <div>{lang.name}</div>
-                    <div className="ms-auto">{lang[aggName].text}</div>
+                    <div className="ms-auto">{lang.value.text}</div>
                 </Stack>
-                <ProgressBar max={maxValue} now={lang[aggName].seconds}></ProgressBar>
+                <ProgressBar max={maxValue} now={lang.value.seconds}></ProgressBar>
             </ListGroup.Item>);
 
     return (
         <>
-            <h3>{aggName.toUpperCase()}</h3>
             <ListGroup>{items}</ListGroup>
         </>
     );

@@ -1,19 +1,12 @@
 {
-   "compilerOptions": {
-      "jsx": "react",
-      "target": "es2016",
-      "outDir": "dist",
-      "allowJs": true,
-      "skipLibCheck": true,
-      "strict": true,
-      "forceConsistentCasingInFileNames": true,
-      "module": "ES2020",
-      "allowSyntheticDefaultImports": true,
-      "moduleResolution": "Node",
-      "declaration": true,
-      "declarationDir": "dist"
-   },
-   "include": [
-      "stories"
-   ]
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true
+  }
 }

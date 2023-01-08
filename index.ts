@@ -1,3 +1,5 @@
-import {Button} from "./components/Button";
-import {Header} from "./components/Header";
-export {Button, Header}
+import React from "react";
+import {Waka} from "./components/waka";
+import {WakaInteractive} from "./components/wakaInteractive";
+
+export {Waka, WakaInteractive};
