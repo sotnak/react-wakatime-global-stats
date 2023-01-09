@@ -5,9 +5,9 @@ import {AggregateFunction, Category, Waka} from "./waka";
 import "./wakaInteractive.css"
 
 export const WakaInteractive = ()=>{
-    const [aggFun, setAggFun] = useState(AggregateFunction.sum);
-    const [category, setCategory] = useState(Category.languages);
-    const [year, setYear] = useState(2022)
+    const [aggFun, setAggFun] = useState<AggregateFunction>(AggregateFunction.sum);
+    const [category, setCategory] = useState<Category>(Category.languages);
+    const [year, setYear] = useState<number>(2022)
 
     const handleAggChange = (agg: AggregateFunction)=>{
         setAggFun(agg);
@@ -46,13 +46,13 @@ export const WakaInteractive = ()=>{
                 </ToggleButtonGroup>
 
                 <ToggleButtonGroup className="ms-auto" type="radio" name="category options" defaultValue={Category.languages} onChange={handleCategoryChange}>
-                    <ToggleButton id="tbg-category-1" variant="info" value={Category.languages}>
+                    <ToggleButton id="tbg-category-1" variant="success" value={Category.languages}>
                         Languages
                     </ToggleButton>
-                    <ToggleButton id="tbg-category-2" variant="info" value={Category.editors}>
+                    <ToggleButton id="tbg-category-2" variant="success" value={Category.editors}>
                         Editors
                     </ToggleButton>
-                    <ToggleButton id="tbg-category-3" variant="info" value={Category.operating_systems}>
+                    <ToggleButton id="tbg-category-3" variant="success" value={Category.operating_systems}>
                         Operating Systems
                     </ToggleButton>
                 </ToggleButtonGroup>

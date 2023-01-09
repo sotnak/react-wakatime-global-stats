@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ICategory, IStats, IValue} from "../misc/iStats";
 import Spinner from "react-bootstrap/Spinner";
 import {ListGroup, ProgressBar, Stack} from "react-bootstrap";
@@ -39,9 +39,10 @@ export const Waka = ({
     year = 2022,
     ...props
 }: WakaProps)=>{
-    const [stats, setStats] = useState(undefined)
-    // @ts-ignore
+    const [stats, setStats] = useState<IStats | undefined>(undefined)
+
     fun(year).then( (nStats) => setStats(nStats)).catch(()=>{
+        console.error(`unable to load year ${year}`)
         setStats(undefined)
     })
 
@@ -56,26 +57,50 @@ export const Waka = ({
 
     let categoryStats: ICategory[] = []
 
-    if(category == Category.languages)
-        categoryStats = (stats as IStats).languages;
+    switch (category) {
+        case Category.languages:{
+            categoryStats = (stats as IStats).languages;
+            break;
+        }
 
-    if(category == Category.editors)
-        categoryStats = (stats as IStats).editors;
+        case Category.editors:{
+            categoryStats = (stats as IStats).editors;
+            break;
+        }
 
-    if(category == Category.operating_systems)
-        categoryStats = (stats as IStats).operating_systems;
+        case Category.operating_systems:{
+            categoryStats = (stats as IStats).operating_systems;
+            break;
+        }
+
+        default:{
+            throw Error(`unknown category: ${category}`)
+        }
+    }
 
     const filteredStats: ICategory[] = categoryStats.filter(elem => elem.name != 'Other');
     let values: IStatsView[] = [];
 
-    if(aggregateFunction == AggregateFunction.average)
-        values = filteredStats.map(elem => ({ name:elem.name, value: elem.average }) );
+    switch (aggregateFunction) {
+        case AggregateFunction.average:{
+            values = filteredStats.map(elem => ({ name:elem.name, value: elem.average }) );
+            break;
+        }
 
-    if(aggregateFunction == AggregateFunction.median)
-        values = filteredStats.map(elem => ({ name:elem.name, value: elem.median }) );
+        case AggregateFunction.median:{
+            values = filteredStats.map(elem => ({ name:elem.name, value: elem.median }) );
+            break;
+        }
 
-    if(aggregateFunction == AggregateFunction.sum)
-        values = filteredStats.map(elem => ({ name:elem.name, value: elem.sum }) );
+        case AggregateFunction.sum:{
+            values = filteredStats.map(elem => ({ name:elem.name, value: elem.sum }) );
+            break;
+        }
+
+        default:{
+            throw Error(`unknown aggregate function: ${aggregateFunction}`)
+        }
+    }
 
     const sortedValues = values
         .sort((a,b) => b.value.seconds - a.value.seconds )
