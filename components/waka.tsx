@@ -7,11 +7,11 @@ interface IStatsView{
     name: string
     value: IValue
 }
-const fun = async (year: number): Promise<IStats> =>{
+const readJsonStats = async (year: number): Promise<IStats> =>{
 
-    // @ts-ignore
-    const {default: stats} = await import(`../assets/waka${year}.json`);
-    return stats.data as IStats;
+    const stats: IStats = await import(`../assets/waka${year}.json`).then(data=>data.data);
+    //console.log(stats)
+    return stats;
 }
 
 export enum AggregateFunction {
@@ -34,17 +34,19 @@ export interface WakaProps {
 }
 
 export const Waka = ({
-                         aggregateFunction = AggregateFunction.sum,
+    aggregateFunction = AggregateFunction.sum,
     category = Category.languages,
     year = 2022,
     ...props
 }: WakaProps)=>{
     const [stats, setStats] = useState<IStats | undefined>(undefined)
 
-    fun(year).then( (nStats) => setStats(nStats)).catch(()=>{
-        console.error(`unable to load year ${year}`)
-        setStats(undefined)
-    })
+    useEffect(()=>{
+        readJsonStats(year).then( (nStats) => setStats(nStats)).catch(()=>{
+            console.error(`unable to load year ${year}`)
+            setStats(undefined)
+        })
+    },[year])
 
     if(!stats)
         return (
@@ -52,6 +54,7 @@ export const Waka = ({
                 <span className="visually-hidden">Loading...</span>
             </Spinner>
         );
+
     let limit: number
     props.limit ? limit = props.limit : limit = 1000000;
 
