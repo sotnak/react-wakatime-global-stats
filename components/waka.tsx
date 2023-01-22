@@ -50,9 +50,10 @@ export const Waka = ({
 
     if(!stats)
         return (
-            <Spinner animation="border" role="status">
-                <span className="visually-hidden">Loading...</span>
-            </Spinner>
+            <div>
+                <Spinner animation="border" role="status" />
+                <span /*className="visually-hidden"*/> Loading...</span>
+            </div>
         );
 
     let limit: number

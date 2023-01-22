@@ -1,6 +1,6 @@
 {
   "name": "@sotnak/react-wakatime-global-stats",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
