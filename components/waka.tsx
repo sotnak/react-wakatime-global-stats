@@ -42,10 +42,10 @@ export const Waka = ({
     const [stats, setStats] = useState<IStats | undefined>(undefined)
 
     useEffect(()=>{
+        setStats(undefined);
         readJsonStats(year).then( (nStats) => setStats(nStats)).catch(()=>{
             console.error(`unable to load year ${year}`)
-            setStats(undefined)
-        })
+        });
     },[year])
 
     if(!stats)
