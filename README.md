@@ -1,4 +1,6 @@
 ## WakaTime stats
+WakaTime global stats (yearly) component library.
+Uses data from year-end-reports, for example on the use of editors, languages and operating systems.
 ### Waka component
 main component
 #### interface WakaProps
