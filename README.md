@@ -6,7 +6,7 @@ main component
 #### interface WakaProps
 - aggregateFunction: AggregateFunction
 - category: Category
-- year: number //[ 2013, ...,2022 ]
+- year: number //[ 2013, ...,2023 ]
 - limit: number | undefined
 
 #### enum AggregateFunction
