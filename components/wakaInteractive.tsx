@@ -3,11 +3,12 @@ import {Pagination, Stack, ToggleButton, ToggleButtonGroup} from "react-bootstra
 import {AggregateFunction, Category, Waka} from "./waka";
 
 import "./wakaInteractive.css"
+import { firstYear, itemLimit, latestYear } from "../misc/constants";
 
 export const WakaInteractive = ()=>{
     const [aggFun, setAggFun] = useState<AggregateFunction>(AggregateFunction.sum);
     const [category, setCategory] = useState<Category>(Category.languages);
-    const [year, setYear] = useState<number>(2022)
+    const [year, setYear] = useState<number>(latestYear)
 
     const handleAggChange = (agg: AggregateFunction)=>{
         setAggFun(agg);
@@ -22,7 +23,7 @@ export const WakaInteractive = ()=>{
     }
 
     let items = [];
-    for (let number = 2013; number <= 2022; number++) {
+    for (let number = firstYear; number <= latestYear; number++) {
         items.push(
             <Pagination.Item key={number} active={number === year} onClick={()=>{handleYearChange(number)} }>
                 {number}
@@ -59,10 +60,10 @@ export const WakaInteractive = ()=>{
             </Stack>
 
             <div id="wakaContainer">
-                <Waka aggregateFunction={aggFun} limit={20} category={category} year={year}/>
+                <Waka aggregateFunction={aggFun} limit={itemLimit} category={category} year={year}/>
             </div>
 
-            <Pagination className="col-md-5 mx-auto">{items}</Pagination>
+            <Pagination className="center">{items}</Pagination>
         </Stack>
     )
 }

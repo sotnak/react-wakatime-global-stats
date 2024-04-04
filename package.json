@@ -1,11 +1,11 @@
 {
   "name": "@sotnak/react-wakatime-global-stats",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "cosmos": "cosmos",
+    "cosmos": "cosmos --port 5001",
     "cosmos-export": "cosmos-export",
     "buildLib": "rollup -c",
     "publishLib": "npm publish --access=public"

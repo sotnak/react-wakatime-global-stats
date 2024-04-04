@@ -36,7 +36,7 @@ export interface WakaProps {
 export const Waka = ({
     aggregateFunction = AggregateFunction.sum,
     category = Category.languages,
-    year = 2022,
+    year = 2023,
     ...props
 }: WakaProps)=>{
     const [stats, setStats] = useState<IStats | undefined>(undefined)
