@@ -5,7 +5,7 @@ import {AggregateFunction, Category, Waka} from "./waka";
 import "./wakaInteractive.css"
 import { firstYear, itemLimit, latestYear } from "../misc/constants";
 
-export const WakaInteractive = ()=>{
+export const WakaInteractive = ({limit = itemLimit})=>{
     const [aggFun, setAggFun] = useState<AggregateFunction>(AggregateFunction.sum);
     const [category, setCategory] = useState<Category>(Category.languages);
     const [year, setYear] = useState<number>(latestYear)
@@ -60,7 +60,7 @@ export const WakaInteractive = ()=>{
             </Stack>
 
             <div id="wakaContainer">
-                <Waka aggregateFunction={aggFun} limit={itemLimit} category={category} year={year}/>
+                <Waka aggregateFunction={aggFun} limit={limit} category={category} year={year}/>
             </div>
 
             <Pagination className="center">{items}</Pagination>

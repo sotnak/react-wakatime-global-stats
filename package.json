@@ -1,6 +1,6 @@
 {
   "name": "@sotnak/react-wakatime-global-stats",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -10,7 +10,11 @@
     "buildLib": "rollup -c",
     "publishLib": "npm publish --access=public"
   },
-  "keywords": ["wakatime", "react component", "global stats"],
+  "keywords": [
+    "wakatime",
+    "react component",
+    "global stats"
+  ],
   "author": "",
   "license": "ISC",
   "files": [
@@ -29,6 +33,7 @@
     "bootstrap": "^5.2.3",
     "css-loader": "^6.7.3",
     "html-webpack-plugin": "^4.5.2",
+    "ignore-loader": "^0.1.2",
     "postcss": "^8.4.21",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
@@ -45,15 +50,15 @@
     "webpack": "^5.75.0"
   },
   "peerDependencies": {
+    "bootstrap": "^5.2.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
-    "react-dom": "^18.2.0",
-    "bootstrap": "^5.2.3"
+    "react-dom": "^18.2.0"
   },
   "dependencies": {
+    "bootstrap": "^5.2.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
-    "react-dom": "^18.2.0",
-    "bootstrap": "^5.2.3"
+    "react-dom": "^18.2.0"
   }
 }
