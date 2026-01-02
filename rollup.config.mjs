@@ -20,7 +20,7 @@ export default {
   plugins: [
     peerDepsExternal(),
     resolve({ preferBuiltins: false }),
-    typescript({ exclude: ["__fixtures__/*.fixture.*"] }),
+    typescript({ exclude: ["__fixtures__/**", "assets/**"] }),
     postcss({ extensions: ['.css'] }),
     uglify(),
     babel({ exclude: 'node_modules/**' }),
