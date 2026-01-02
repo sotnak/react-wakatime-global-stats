@@ -45,7 +45,7 @@ export const Waka = ({
     ...props
 }: WakaProps) => {
     const { data, error, isLoading } = useSWR(urlGetter(year), fetcher, {
-        revalidateIfStale: false, revalidateOnFocus: false, refreshInterval: 0
+        dedupingInterval: 5 * 60 * 1000 // 5 min
     })
 
     if (isLoading)
