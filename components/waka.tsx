@@ -1,17 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {ICategory, IStats, IValue} from "../misc/iStats";
 import Spinner from "react-bootstrap/Spinner";
 import {ListGroup, ProgressBar, Stack} from "react-bootstrap";
+import useSWR from 'swr'
+import axios from 'axios'
+
+
+const defaultFetcher = (url: string) => axios.get(url).then(res => res.data)
 
 interface IStatsView{
     name: string
     value: IValue
-}
-const readJsonStats = async (year: number): Promise<IStats> =>{
-
-    const stats: IStats = await import(`../assets/waka${year}.json`).then(data=>data.data);
-    //console.log(stats)
-    return stats;
 }
 
 export enum AggregateFunction {
@@ -26,35 +25,43 @@ export enum Category{
     operating_systems
 }
 
-export interface WakaProps {
-    aggregateFunction: AggregateFunction
-    category: Category
-    year: number
-    limit: number|undefined
+export type UrlGetter = (year: number) => string;
+
+interface WakaProps {
+  aggregateFunction?: AggregateFunction;
+  category?: Category;
+  year?: number;
+  urlGetter: UrlGetter;
+  fetcher?: ((url: string) => Promise<any>);
+  limit: number | undefined;
 }
 
 export const Waka = ({
     aggregateFunction = AggregateFunction.sum,
     category = Category.languages,
     year = 2023,
+    urlGetter,
+    fetcher = defaultFetcher,
     ...props
 }: WakaProps)=>{
-    const [stats, setStats] = useState<IStats | undefined>(undefined)
+    const { data, error, isLoading } = useSWR(urlGetter(year), fetcher)
 
-    useEffect(()=>{
-        setStats(undefined);
-        readJsonStats(year).then( (nStats) => setStats(nStats)).catch(()=>{
-            console.error(`unable to load year ${year}`)
-        });
-    },[year])
-
-    if(!stats)
+    if(isLoading)
         return (
             <div>
                 <Spinner animation="border" role="status" />
                 <span /*className="visually-hidden"*/> Loading...</span>
             </div>
         );
+
+    if(error)
+        return (
+            <div>
+                <span /*className="visually-hidden"*/>{error.message}</span>
+            </div>
+        );
+
+    const stats: IStats = data.data
 
     let limit: number
     props.limit ? limit = props.limit : limit = 1000000;
@@ -63,17 +70,17 @@ export const Waka = ({
 
     switch (category) {
         case Category.languages:{
-            categoryStats = (stats as IStats).languages;
+            categoryStats = stats.languages;
             break;
         }
 
         case Category.editors:{
-            categoryStats = (stats as IStats).editors;
+            categoryStats = stats.editors;
             break;
         }
 
         case Category.operating_systems:{
-            categoryStats = (stats as IStats).operating_systems;
+            categoryStats = stats.operating_systems;
             break;
         }
 

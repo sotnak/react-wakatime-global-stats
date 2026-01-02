@@ -1,11 +1,21 @@
 import React, {useState} from "react";
 import {Pagination, Stack, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
-import {AggregateFunction, Category, Waka} from "./waka";
+import {UrlGetter, AggregateFunction, Category, Waka} from "./waka";
 
 import "./wakaInteractive.css"
-import { firstYear, itemLimit, latestYear } from "../misc/constants";
+import { firstYear, itemLimit } from "../misc/constants";
 
-export const WakaInteractive = ({limit = itemLimit})=>{
+const latestYear = Math.max(firstYear, new Date().getFullYear() - 1);
+
+export const WakaInteractive = ({
+    limit = itemLimit,
+    urlGetter,
+    fetcher
+}: {
+    limit: number,
+    urlGetter: UrlGetter,
+    fetcher?: ((url: string) => Promise<any>)
+})=>{
     const [aggFun, setAggFun] = useState<AggregateFunction>(AggregateFunction.sum);
     const [category, setCategory] = useState<Category>(Category.languages);
     const [year, setYear] = useState<number>(latestYear)
@@ -60,7 +70,7 @@ export const WakaInteractive = ({limit = itemLimit})=>{
             </Stack>
 
             <div id="wakaContainer">
-                <Waka aggregateFunction={aggFun} limit={limit} category={category} year={year}/>
+                <Waka aggregateFunction={aggFun} limit={limit} category={category} year={year} urlGetter={urlGetter} fetcher={fetcher}/>
             </div>
 
             <Pagination className="center">{items}</Pagination>

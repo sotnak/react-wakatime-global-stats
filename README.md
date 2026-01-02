@@ -7,7 +7,8 @@ main component
 - aggregateFunction: AggregateFunction
 - category: Category
 - year: number //[ 2013, ...,2024 ]
-- limit: number | undefined
+- urlGetter: (year: number) => string
+- limit?: number
 
 #### enum AggregateFunction
 - sum = 0

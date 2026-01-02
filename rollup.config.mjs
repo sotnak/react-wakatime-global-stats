@@ -6,30 +6,23 @@ import { uglify } from "rollup-plugin-uglify";
 import { babel } from '@rollup/plugin-babel';
 
 export default {
-    input: "./index.ts",
-    output: [
-        {
-            file: "dist/index.js",
-            format: 'es'
-        }
-    ],
-    external:[
-      "react",
-        "react-bootstrap",
-        "react-dom"
-    ],
-    plugins: [
-        peerDepsExternal(),
-        resolve(),
-        typescript({
-            exclude:["__fixtures__/*.fixture.*"]
-        }),
-        postcss({
-            extensions: ['.css']
-        }),
-        uglify(),
-        babel({
-            exclude: 'node_modules/**'
-        }),
-    ]
+  input: "./index.ts",
+  output: [
+    { file: "dist/index.js", format: 'es' }
+  ],
+  external: [
+    "react",
+    "react-dom",
+    "react-bootstrap",
+    "swr",
+    "axios"
+  ],
+  plugins: [
+    peerDepsExternal(),
+    resolve({ preferBuiltins: false }),
+    typescript({ exclude: ["__fixtures__/*.fixture.*"] }),
+    postcss({ extensions: ['.css'] }),
+    uglify(),
+    babel({ exclude: 'node_modules/**' }),
+  ]
 }
