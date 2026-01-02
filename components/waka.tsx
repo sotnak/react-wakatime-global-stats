@@ -1,14 +1,14 @@
 import React from 'react';
-import {ICategory, IStats, IValue} from "../misc/iStats";
+import { ICategory, IStats, IValue } from "../misc/iStats";
 import Spinner from "react-bootstrap/Spinner";
-import {ListGroup, ProgressBar, Stack} from "react-bootstrap";
+import { ListGroup, ProgressBar, Stack } from "react-bootstrap";
 import useSWR from 'swr'
 import axios from 'axios'
 
 
 const defaultFetcher = (url: string) => axios.get(url).then(res => res.data)
 
-interface IStatsView{
+interface IStatsView {
     name: string
     value: IValue
 }
@@ -19,7 +19,7 @@ export enum AggregateFunction {
     median
 }
 
-export enum Category{
+export enum Category {
     languages,
     editors,
     operating_systems
@@ -28,12 +28,12 @@ export enum Category{
 export type UrlGetter = (year: number) => string;
 
 interface WakaProps {
-  aggregateFunction?: AggregateFunction;
-  category?: Category;
-  year?: number;
-  urlGetter: UrlGetter;
-  fetcher?: ((url: string) => Promise<any>);
-  limit: number | undefined;
+    aggregateFunction?: AggregateFunction;
+    category?: Category;
+    year?: number;
+    urlGetter: UrlGetter;
+    fetcher?: ((url: string) => Promise<any>);
+    limit: number | undefined;
 }
 
 export const Waka = ({
@@ -43,10 +43,12 @@ export const Waka = ({
     urlGetter,
     fetcher = defaultFetcher,
     ...props
-}: WakaProps)=>{
-    const { data, error, isLoading } = useSWR(urlGetter(year), fetcher)
+}: WakaProps) => {
+    const { data, error, isLoading } = useSWR(urlGetter(year), fetcher, {
+        revalidateIfStale: false, revalidateOnFocus: false, refreshInterval: 0
+    })
 
-    if(isLoading)
+    if (isLoading)
         return (
             <div>
                 <Spinner animation="border" role="status" />
@@ -54,7 +56,7 @@ export const Waka = ({
             </div>
         );
 
-    if(error)
+    if (error)
         return (
             <div>
                 <span /*className="visually-hidden"*/>{error.message}</span>
@@ -69,22 +71,22 @@ export const Waka = ({
     let categoryStats: ICategory[] = []
 
     switch (category) {
-        case Category.languages:{
+        case Category.languages: {
             categoryStats = stats.languages;
             break;
         }
 
-        case Category.editors:{
+        case Category.editors: {
             categoryStats = stats.editors;
             break;
         }
 
-        case Category.operating_systems:{
+        case Category.operating_systems: {
             categoryStats = stats.operating_systems;
             break;
         }
 
-        default:{
+        default: {
             throw Error(`unknown category: ${category}`)
         }
     }
@@ -93,29 +95,29 @@ export const Waka = ({
     let values: IStatsView[] = [];
 
     switch (aggregateFunction) {
-        case AggregateFunction.average:{
-            values = filteredStats.map(elem => ({ name:elem.name, value: elem.average }) );
+        case AggregateFunction.average: {
+            values = filteredStats.map(elem => ({ name: elem.name, value: elem.average }));
             break;
         }
 
-        case AggregateFunction.median:{
-            values = filteredStats.map(elem => ({ name:elem.name, value: elem.median }) );
+        case AggregateFunction.median: {
+            values = filteredStats.map(elem => ({ name: elem.name, value: elem.median }));
             break;
         }
 
-        case AggregateFunction.sum:{
-            values = filteredStats.map(elem => ({ name:elem.name, value: elem.sum }) );
+        case AggregateFunction.sum: {
+            values = filteredStats.map(elem => ({ name: elem.name, value: elem.sum }));
             break;
         }
 
-        default:{
+        default: {
             throw Error(`unknown aggregate function: ${aggregateFunction}`)
         }
     }
 
     const sortedValues = values
-        .sort((a,b) => b.value.seconds - a.value.seconds )
-        .slice(0,limit)
+        .sort((a, b) => b.value.seconds - a.value.seconds)
+        .slice(0, limit)
 
     let maxValue: number;
     sortedValues[0] ? maxValue = sortedValues[0].value.seconds : 0
